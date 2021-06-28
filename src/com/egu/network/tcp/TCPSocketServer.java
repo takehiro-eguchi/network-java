@@ -43,7 +43,7 @@ public class TCPSocketServer {
 				socket.shutdownOutput();
 				socket.close();
 			} catch (IOException e) {
-				throw new RuntimeException(e);
+				e.printStackTrace();
 			}
 		}
 	}
