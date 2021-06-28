@@ -48,6 +48,12 @@ public class TCPSocketServer {
 		}
 	}
 
+	/** バックログのデフォルト値 */
+	private static final int DEFAULT_BACKLOG = 5;
+
+	/** スレッド数のデフォルト値 */
+	private static final int DEFAULT_THREADS = 5;
+
 	/** サーバソケット */
 	private final ServerSocket serverSocket;
 
@@ -67,22 +73,9 @@ public class TCPSocketServer {
 	 */
 	public TCPSocketServer(
 			int port, Consumer<SocketTask> consumer) {
-		this(port, consumer, 10, 5);
-	}
-
-	/**
-	 * インスタンスを生成します。
-	 * @param port ポート番号
-	 * @param consumer 受信時の実行タスク
-	 * @param backlog サーバソケットのバックログ
-	 * @param threads サーバソケット処理の用スレッド数
-	 */
-	public TCPSocketServer(
-			int port, Consumer<SocketTask> consumer,
-			int backlog, int threads) {
 		// サーバソケットの初期化
 		try {
-			this.serverSocket = new ServerSocket(port, backlog);
+			this.serverSocket = new ServerSocket(port, DEFAULT_BACKLOG);
 			this.serverSocket.setSoTimeout(1000);
 		} catch (IOException e) {
 			throw new RuntimeException(e);
@@ -92,7 +85,7 @@ public class TCPSocketServer {
 		this.consumer = consumer;
 
 		// 実行サービスの初期化
-		this.executorService = Executors.newFixedThreadPool(threads);
+		this.executorService = Executors.newFixedThreadPool(DEFAULT_THREADS);
 	}
 
 	/** 実行を開始します。 */
