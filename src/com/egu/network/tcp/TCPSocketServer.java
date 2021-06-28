@@ -15,7 +15,7 @@ import java.util.function.Consumer;
  * @author t-eguchi
  *
  */
-public class SocketServer {
+public class TCPSocketServer {
 
 	/** ソケット用のタスクです。 */
 	public static class SocketTask {
@@ -65,7 +65,7 @@ public class SocketServer {
 	 * @param port ポート番号
 	 * @param consumer 受信時の実行タスク
 	 */
-	public SocketServer(
+	public TCPSocketServer(
 			int port, Consumer<SocketTask> consumer) {
 		this(port, consumer, 10, 5);
 	}
@@ -77,7 +77,7 @@ public class SocketServer {
 	 * @param backlog サーバソケットのバックログ
 	 * @param threads サーバソケット処理の用スレッド数
 	 */
-	public SocketServer(
+	public TCPSocketServer(
 			int port, Consumer<SocketTask> consumer,
 			int backlog, int threads) {
 		// サーバソケットの初期化
