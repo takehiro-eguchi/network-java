@@ -74,7 +74,7 @@ public class HTTPServer {
 
 		// Content-Lengthを設定
 		HttpContent content = response.getContent();
-		byte[] contentBytes = content.getContent();
+		byte[] contentBytes = content != null ? content.getContent() : null;
 		int contentLength = 0;
 		if (contentBytes != null) {
 			contentLength = contentBytes.length;

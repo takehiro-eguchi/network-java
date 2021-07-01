@@ -83,7 +83,7 @@ public class HttpResponse {
 	public static HttpResponse notFound() {
 		HttpStatusLine line = new HttpStatusLine(
 				HttpStatusLine.DEFAULT_HTTP_VERSION, "404", "Not Found");
-		return new HttpResponse(line, null, null);
+		return new HttpResponse(line, new HttpHeader(), new HttpContent(new byte[0]));
 	}
 
 	/** ステータス行 */
