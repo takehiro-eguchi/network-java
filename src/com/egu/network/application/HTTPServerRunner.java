@@ -28,7 +28,7 @@ public class HTTPServerRunner {
 				OutputStream outputStream = task.getOutputStream();
 				BufferedWriter writer = IOUtil.newBufferedWriter(outputStream)) {
 
-				// 入力値
+				// 入力値のダンプ
 				String line = null;
 				while ((line = reader.readLine()) != null && !line.isEmpty()) {
 					System.out.println(line);
