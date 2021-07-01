@@ -45,6 +45,20 @@ public class IOUtil {
 	}
 
 	/**
+	 * 読み込みを行います。
+	 * @param reader
+	 * @param buf
+	 * @return
+	 */
+	public static int read(Reader reader, char[] buf) {
+		try {
+			return reader.read(buf);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	/**
 	 * {@link Writer}へデータを移動させます。
 	 * @param reader
 	 * @param writer
@@ -67,5 +81,56 @@ public class IOUtil {
 		OutputStreamWriter outputStreamWriter = new OutputStreamWriter(outputStream);
 		BufferedWriter bufferedWriter = new BufferedWriter(outputStreamWriter);
 		return bufferedWriter;
+	}
+
+	/**
+	 * 1行書き込みを行います。
+	 * @param writer
+	 * @param line
+	 */
+	public static void writeLine(BufferedWriter writer, String line) {
+		try {
+			writer.write(line);
+			writer.newLine();
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	/**
+	 * 改行します。
+	 * @param writer
+	 */
+	public static void newLine(BufferedWriter writer) {
+		try {
+			writer.newLine();
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	/**
+	 * 書き込みを行います。
+	 * @param writer
+	 * @param string
+	 */
+	public static void write(BufferedWriter writer, String string) {
+		try {
+			writer.write(string);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	/**
+	 * バッファリングをフラッシュします。
+	 * @param writer
+	 */
+	public static void flush(BufferedWriter writer) {
+		try {
+			writer.flush();
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
 	}
 }

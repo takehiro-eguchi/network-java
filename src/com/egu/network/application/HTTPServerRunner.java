@@ -1,12 +1,6 @@
 package com.egu.network.application;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-
-import com.egu.network.util.IOUtil;
+import com.egu.network.application.HttpResponse.HttpStatusLine;
 
 /**
  * HTTPサーバの実行クラスです。
@@ -15,48 +9,71 @@ import com.egu.network.util.IOUtil;
  */
 public class HTTPServerRunner {
 
+	/** リクエスト回数 */
+	private static int requestCount = 0;
+
 	/**
 	 * 実行開始します。
 	 * @param args
 	 */
 	public static void main(String[] args) {
 		// サーバの開始
-		HTTPServer server = new HTTPServer(8080, task -> {
-			try(
-				InputStream inputStream = task.getIputStream();
-				BufferedReader reader = IOUtil.newBufferedReader(inputStream);
-				OutputStream outputStream = task.getOutputStream();
-				BufferedWriter writer = IOUtil.newBufferedWriter(outputStream)) {
-
-				// 入力値のダンプ
-				String line = null;
-				while ((line = reader.readLine()) != null && !line.isEmpty()) {
-					System.out.println(line);
-				}
-
-				// 出力
-				writer.write("HTTP/1.1 200 OK");
-				writer.newLine();
-				String content = "<html><p>Hello, world</p></html>";
-				int contentLength = content.getBytes().length;
-				writer.write("Content-Length: " + contentLength);
-				writer.newLine();
-				writer.write("Content-Type: text/html");
-				writer.newLine();
-				writer.write("Cache-Control: max-age=20");
-				writer.newLine();
-				writer.newLine();
-				writer.write(content);
-				writer.flush();
-
-			} catch (IOException e) {
-				throw new RuntimeException(e);
-			}
-		});
+		HTTPServer server = new HTTPServer(8080);
+		server.addListener("/kadai_1", HTTPServerRunner::responseKadai1);
+		server.addListener("/kadai_2", HTTPServerRunner::responseKadai2);
+		server.addListener("/kadai_3", HTTPServerRunner::responseKadai3);
 		server.start();
 
 		// シャットダウンフックの登録
 		Thread shutdownThread = new Thread(() -> server.stop());
 		Runtime.getRuntime().addShutdownHook(shutdownThread);
+
+		System.out.println("HTTPサーバを起動しました。");
+	}
+
+	/** 課題1のレスポンス */
+	private static HttpResponse responseKadai1(HttpRequest request) {
+		// ステータス行
+		HttpStatusLine line = HttpStatusLine.ok();
+		// ヘッダ
+		HttpHeader header = new HttpHeader();
+		header.addHeader("Content-Type", "text/html");
+		// コンテンツ
+		String contentString = getContent();
+		HttpContent content = new HttpContent(contentString);
+		// レスポンス作成
+		return new HttpResponse(line, header, content);
+	}
+
+	/** 課題2のレスポンス */
+	private static HttpResponse responseKadai2(HttpRequest request) {
+		// ステータス行
+		HttpStatusLine line = HttpStatusLine.ok();
+		// ヘッダ
+		HttpHeader header = new HttpHeader();
+		header.addHeader("Content-Type", "text/html");
+		header.addHeader("Cache-Control", "max-age=20");
+		// コンテンツ
+		String contentString = getContent();
+		HttpContent content = new HttpContent(contentString);
+		// レスポンス作成
+		return new HttpResponse(line, header, content);
+	}
+
+	/** 課題3のレスポンス */
+	private static HttpResponse responseKadai3(HttpRequest request) {
+		// ステータス行
+		HttpStatusLine line = HttpStatusLine.found();
+		// ヘッダ
+		HttpHeader header = new HttpHeader();
+		header.addHeader("Location", "/kadai_1");
+		// レスポンス作成
+		return new HttpResponse(line, header, new HttpContent(new byte[0]));
+	}
+
+	/** コンテンツを取得します */
+	private static String getContent() {
+		return String.format(
+				"<html><p>Hello, world !! (Request Count = %d) </p></html>", ++requestCount);
 	}
 }

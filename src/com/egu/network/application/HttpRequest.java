@@ -1,9 +1,7 @@
 package com.egu.network.application;
 
 import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
-import java.io.OutputStreamWriter;
 
 import com.egu.network.util.IOUtil;
 
@@ -14,19 +12,12 @@ import com.egu.network.util.IOUtil;
  */
 public class HttpRequest {
 
-	/**
-	 * リクエスト行
-	 * @author t-eguchi
-	 *
-	 */
+	/** リクエスト行 */
 	public static class HttpRequestLine {
-
 		/** メソッド */
 		private final String method;
-
 		/** パス */
 		private final String path;
-
 		/** バージョン */
 		private final String version;
 
@@ -61,22 +52,13 @@ public class HttpRequest {
 			return new HttpRequestLine(method, path, version);
 		}
 
-		/**
-		 * メソッドを取得します。
-		 * @return
-		 */
+		/** メソッドを取得します。 */
 		public String getMethod() { return method; }
 
-		/**
-		 * パスを取得します。
-		 * @return
-		 */
+		/** パスを取得します。 */
 		public String getPath() { return path; }
 
-		/**
-		 * バージョンを取得します。
-		 * @return
-		 */
+		/** バージョンを取得します。 */
 		public String getVersion() { return version; }
 
 		@Override
@@ -89,10 +71,8 @@ public class HttpRequest {
 
 	/** リクエスト行 */
 	private final HttpRequestLine requestLine;
-
 	/** ヘッダ */
 	private final HttpHeader header;
-
 	/** コンテンツ */
 	private final HttpContent content;
 
@@ -127,37 +107,22 @@ public class HttpRequest {
 		}
 
 		// 残りはコンテンツとして格納する
-		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-		OutputStreamWriter writer = new OutputStreamWriter(outputStream);
-		IOUtil.transferTo(reader, writer);
-		HttpContent content = new HttpContent(outputStream.toByteArray());
+		int contentLength = header.getContentLength();
+		char[] contentBufs = new char[contentLength];
+		IOUtil.read(reader, contentBufs);
+		HttpContent content = new HttpContent(new String(contentBufs));
 
 		return new HttpRequest(requestLine, header, content);
 	}
 
-	/**
-	 * リクエスト行を取得します。
-	 * @return
-	 */
-	public HttpRequestLine getRequestLine() {
-		return requestLine;
-	}
+	/** リクエスト行を取得します。 */
+	public HttpRequestLine getRequestLine() { return requestLine; }
 
-	/**
-	 * ヘッダを取得します。
-	 * @return
-	 */
-	public HttpHeader getHeader() {
-		return header;
-	}
+	/** ヘッダを取得します。 */
+	public HttpHeader getHeader() { return header; }
 
-	/**
-	 * コンテンツを取得します。
-	 * @return
-	 */
-	public HttpContent getContent() {
-		return content;
-	}
+	/** コンテンツを取得します。 */
+	public HttpContent getContent() { return content; }
 
 	@Override
 	public String toString() {

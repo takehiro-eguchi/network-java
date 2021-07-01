@@ -19,6 +19,14 @@ public class HttpContent {
 	}
 
 	/**
+	 * コンテンツを渡すことにより、インスタンスを生成します。
+	 * @param content
+	 */
+	public HttpContent(String content) {
+		this.content = content.getBytes();
+	}
+
+	/**
 	 * コンテンツを取得します。
 	 * @return
 	 */
@@ -32,5 +40,10 @@ public class HttpContent {
 	 */
 	public String getContentAsString() {
 		return new String(content);
+	}
+
+	@Override
+	public String toString() {
+		return getContentAsString();
 	}
 }
