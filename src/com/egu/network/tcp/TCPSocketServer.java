@@ -19,10 +19,19 @@ public class TCPSocketServer {
 
 	/** ソケット用のタスクです。 */
 	public static class SocketTask {
+
+		/** ソケット */
 		private final Socket socket;
+
+		/**
+		 * ソケットを渡すことにより、インスタンスを生成します。
+		 * @param socket
+		 */
 		public SocketTask(Socket socket) {
 			this.socket = socket;
 		}
+
+		/** 入力ストリームを取得します */
 		public InputStream getIputStream() {
 			try {
 				return socket.getInputStream();
@@ -30,6 +39,8 @@ public class TCPSocketServer {
 				throw new RuntimeException(e);
 			}
 		}
+
+		/** 出力ストリームを取得します */
 		public OutputStream getOutputStream() {
 			try {
 				return socket.getOutputStream();
@@ -37,8 +48,11 @@ public class TCPSocketServer {
 				throw new RuntimeException(e);
 			}
 		}
+
+		/** 終了します */
 		public void shutdown() {
 			try {
+				if (socket.isClosed()) return;
 				socket.shutdownInput();
 				socket.shutdownOutput();
 				socket.close();
