@@ -8,7 +8,6 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Reader;
-import java.io.Writer;
 
 /**
  * 入出力ユーティリティです。
@@ -53,20 +52,6 @@ public class IOUtil {
 	public static int read(Reader reader, char[] buf) {
 		try {
 			return reader.read(buf);
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	/**
-	 * {@link Writer}へデータを移動させます。
-	 * @param reader
-	 * @param writer
-	 * @return
-	 */
-	public static long transferTo(Reader reader, Writer writer) {
-		try {
-			return reader.transferTo(writer);
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
