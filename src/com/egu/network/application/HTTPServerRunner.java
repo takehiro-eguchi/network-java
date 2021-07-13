@@ -34,20 +34,9 @@ public class HTTPServerRunner {
 					System.out.println(line);
 				}
 
-				// 出力
+				// TODO: 出力
 				writer.write("HTTP/1.1 200 OK");
 				writer.newLine();
-				String content = "<html><p>Hello, world</p></html>";
-				int contentLength = content.getBytes().length;
-				writer.write("Content-Length: " + contentLength);
-				writer.newLine();
-				writer.write("Content-Type: text/html");
-				writer.newLine();
-				writer.write("Cache-Control: max-age=20");
-				writer.newLine();
-				writer.newLine();
-				writer.write(content);
-				writer.flush();
 
 			} catch (IOException e) {
 				throw new RuntimeException(e);
