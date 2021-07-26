@@ -15,9 +15,6 @@ public class HTTPServer {
 	/** TCP用のサーバです */
 	private final TCPSocketServer tcpServer;
 
-	/** リクエストレスポンスコンシューマ */
-	//private final Consumer<SocketTask> consumer;
-
 	/**
 	 * インスタンスを生成します。
 	 * @param port ポート番号
